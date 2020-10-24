@@ -135,6 +135,15 @@ users.verifyToken = function (token) {
   });
 };
 
+/**
+ * 
+ * @param {obj} record 
+ */
+users.listall = async function (record) {
+  let reading = await adminMongoDB.read(record);
+  return reading;
+};
+
 
 module.exports = users;
 
