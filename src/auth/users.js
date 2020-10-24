@@ -167,6 +167,15 @@ users.listall = async function (record) {
   return reading;
 };
 
+/**
+ * 
+ * @param {obj} record 
+ */
+users.usercomplaintsHandler = async function (record) {
+  let reading = await complaintMongoDB.read(record);
+  return reading;
+};
+
 
 module.exports = users;
 

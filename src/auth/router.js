@@ -39,7 +39,7 @@ router.post('/adduser', bearerAuthMiddleware, permissions('create'), addUserHand
 router.get('/getuserprofile', bearerAuthMiddleware, permissions('read'), userProfileHandler);
 router.patch('/usereditprofile', bearerAuthMiddleware, permissions('read'), userEditProfile);
 router.post('/addcomplaint', bearerAuthMiddleware, permissions('read'), addcomplaintHandler);
-// router.get('/usercomplaints',bearerAuthMiddleware, permissions('read'), usercomplaintsHandler);
+router.get('/usercomplaints', bearerAuthMiddleware, permissions('read'), usercomplaintsHandler);
 
 /**                                                                                                    */
 
@@ -247,6 +247,21 @@ function acceptUser(req, res, next) {
 }
 
 
+/**
+ * @param {obj} req 
+ * @param {obj} res 
+ * @param {function} next 
+ */
+function listall(req, res, next) {
+  users.listall(undefined).then(result => {
+    res.status(200).send(result);
+  }).catch(err => {
+    console.log('ERR!!');
+    res.status(403).send('Listing error');
+  });
+}
+
+
 
 /**                              User Routes Definitions                              */
 
@@ -319,8 +334,8 @@ function userProfileHandler(req, res, next) {
  * @param {obj} res 
  * @param {function} next 
  */
-function listall(req, res, next) {
-  users.listall(undefined).then(result => {
+function usercomplaintsHandler(req, res, next) {
+  users.usercomplaintsHandler(undefined).then(result => {
     res.status(200).send(result);
   }).catch(err => {
     console.log('ERR!!');

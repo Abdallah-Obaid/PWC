@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
   *@property {String} status 
   *@property {String} subject
   *@property {String} content
+  *@property {String} mobile
   */
 const complaint = mongoose.Schema({
   username: { type: String, required: true },
@@ -18,6 +19,7 @@ const complaint = mongoose.Schema({
   status: { type: String, default: 'Pending' },
   subject: { type: String },
   content: { type: String },
+  mobile: { type: String },
 
 });
 
