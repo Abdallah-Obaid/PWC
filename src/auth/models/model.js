@@ -18,7 +18,7 @@ class Model {
      * @return {*}
      */
   read(username) {
-    let queryObject = username!==undefined ? {username:username} : {};
+    let queryObject = username !== undefined ? { username: username } : {};
     return this.schema.find(queryObject);
   }
 
@@ -37,7 +37,7 @@ class Model {
      * @return {*}
      */
   readId(_id) {
-    let queryObject = _id!==undefined ? {_id:_id} : {};
+    let queryObject = _id !== undefined ? { _id: _id } : {};
     return this.schema.find(queryObject);
   }
 
@@ -58,7 +58,7 @@ class Model {
      * @return {*}
      */
   update(_id, record) {
-    return this.schema.findByIdAndUpdate(_id, record, {new: true});
+    return this.schema.findByIdAndUpdate(_id, record, { new: true });
   }
 
 
@@ -69,7 +69,7 @@ class Model {
      * @return {*}
      */
   PATCH(_id, record) {
-    return this.schema.findByIdAndUpdate(_id, record, {new: true});
+    return this.schema.findByIdAndUpdate(_id, record, { new: true });
   }
 
   /**

@@ -38,8 +38,7 @@ router.post('/adduser', bearerAuthMiddleware, permissions('create'), addUserHand
 
 router.get('/getuserprofile', bearerAuthMiddleware, permissions('read'), userProfileHandler);
 router.patch('/usereditprofile', bearerAuthMiddleware, permissions('read'), userEditProfile);
-router.post('/uservacation', bearerAuthMiddleware, permissions('read'), uservacation);
-router.post('/addcomplaint', bearerAuthMiddleware, permissions('create'), addcomplaintHandler);
+router.post('/addcomplaint', bearerAuthMiddleware, permissions('read'), addcomplaintHandler);
 // router.get('/usercomplaints',bearerAuthMiddleware, permissions('read'), usercomplaintsHandler);
 
 /**                                                                                                    */
@@ -154,23 +153,36 @@ async function addUserHandler(req, res) {
   }
 }
 async function addcomplaintHandler(req, res) {
-  let newComplaint = req.body;
-  try {
+  let complaintMsg = req.body;
+  let userId = req.user.id;
+  console.log(req.user, 'req.userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+  let user = await adminModel.readId(userId);
+  console.log(user, 'useruseruseruseruseruseruseruseruser')
+  complaintMsg.username = user[0].username;
+  complaintMsg.email = user[0].email;
+  console.log(complaintMsg, 'complaintMsg')
+  users.saveComplaint(complaintMsg).then(async result => {
+    console.log(result, "result")
+    // generate a token and return it.
     sgMail.setApiKey('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');
     const msg = {
-      to: `${newUser.email}`,
-      from: 'abdallahobaid23@gmail.com',
-      subject: 'From PWC',
-      text: 'Welcome to PWC (:',
-      html: `<strong> Welcome to our site your user name is:${newUser.username} and  your password is:${newUser.password} (:</strong>`,
+      to: `${user[0].email}`,
+      from: `abdallahobaid23@gmail.com`,
+      subject: `${complaintMsg.subject}`,
+      text: 'Request has been sent (:',
+      html: `<strong> ${complaintMsg.content}(:</strong>`,
     };
-    await sgMail.send(msg);
-    await users.saveDirect(newUser);
-    res.status(200).send('Created');
-  } catch (error) {
-    console.log('router.js CREATE=====>', error);
-    res.status(500).send('This User is already created');
-  }
+    try {
+      await sgMail.send(msg);
+    } catch (error) {
+      res.send(error);
+    }
+    res.status(201).json('Complaint request message sent');
+  }).catch(err => {
+    console.log('ERR!!');
+    res.status(403).send('Not sent!!');
+  })
+
 }
 
 
@@ -234,12 +246,9 @@ function acceptUser(req, res, next) {
   });
 }
 
-/**                               Accountant Routes Definitions                               */
-
 
 
 /**                              User Routes Definitions                              */
-
 
 /**
  * 

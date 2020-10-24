@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET; // place this in your .env
 const mongoDB = require('./models/users/users-model');
 const adminMongoDB = require('./models/admin/admin-model');
+const complaintMongoDB = require('./models/complaint/complaint-model');
 
 let users = {}; //exporting
 let roles = {
@@ -26,6 +27,19 @@ users.save = async function (record) {
     return record;
   }
   return Promise.reject();
+};
+
+/**
+ * @param {obj}
+ */
+users.saveComplaint = async function (record) {
+  try {
+    await complaintMongoDB.create(record);
+    console.log('saveComplaint')
+    return record;
+  } catch (err) {
+    return Promise.reject();
+  }
 };
 
 users.saveDirect = async function (record) {

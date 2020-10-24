@@ -24,7 +24,7 @@ const admin = mongoose.Schema({
   position: { type: String, required: true },
   workHours: { type: Number },
   image: { type: String },
-  gender: { type: String },
+  gender: { type: String, default: 'Male' },
   birthday: { type: String },
   bio: { type: String, default: 'Add your bio...' },
   mobile: { type: String, default: '+962' },
