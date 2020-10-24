@@ -37,6 +37,7 @@ router.post('/adduser', bearerAuthMiddleware, permissions('create'), addUserHand
 /**                                         User Routes                                              */
 
 router.get('/getuserprofile', bearerAuthMiddleware, permissions('read'), userProfileHandler);
+router.patch('/usereditprofile', bearerAuthMiddleware, permissions('read'), userEditProfile);
 router.post('/uservacation', bearerAuthMiddleware, permissions('read'), uservacation);
 router.post('/addcomplaint', bearerAuthMiddleware, permissions('create'), addcomplaintHandler);
 // router.get('/usercomplaints',bearerAuthMiddleware, permissions('read'), usercomplaintsHandler);
@@ -267,6 +268,26 @@ async function uservacation(req, res, next) {
   res.status(200).json('Vacation request message sent');
   console.log('Message sent');
 }
+
+
+/**
+ * 
+ * @param {obj} req 
+ * @param {obj} res 
+ * @param {function} next 
+ */
+function userEditProfile(req, res, next) {
+  let userId = req.user.id;
+  let record = req.body;
+  users.updateUserProfile(userId, record).then(result => {
+    res.status(200).send('Updated');
+  }).catch(err => {
+    console.log('ERR!!');
+    res.status(403).send('Edit error');
+  });
+}
+
+
 /**
  * 
  * @param {obj} req 

@@ -119,6 +119,7 @@ users.list = async function (record) {
  * @param {obj} record 
  */
 users.updateUserProfile = async function (id, record) {
+  record.password = await bcrypt.hash(record.password, 5);
   let reading = await adminMongoDB.PATCH(id, record);
   return reading[0];
 };
