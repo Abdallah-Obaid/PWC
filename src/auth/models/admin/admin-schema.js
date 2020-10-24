@@ -17,16 +17,18 @@ const mongoose = require('mongoose');
   *@property {String} birthday
   */
 const admin = mongoose.Schema({
-  username : {type: String, required: true},
-  email: { type: String, required: true},
-  password: {type: String, required: true},
-  role: {type: String, required: true},
-  position: {type: String, required: true},
-  workHours: {type: Number},
-  image: {type: String},
-  gender: {type: String},
-  birthday: {type: String},
-
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  role: { type: String, required: true },
+  position: { type: String, required: true },
+  workHours: { type: Number },
+  image: { type: String },
+  gender: { type: String },
+  birthday: { type: String },
+  bio: { type: String, default: 'Add your bio...' },
+  mobile: { type: String, default: '+962' },
+  signUpDate: { type: String, default: '03/08/2020' },
 });
 
 module.exports = mongoose.model('admin', admin);
