@@ -4,7 +4,6 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
-const io = require('socket.io')(server);
 
 /////////////////////////////////////////////////////////////////
 
@@ -26,18 +25,6 @@ app.use(userRouters);
 
 //////////////////////////////////////////////////////////
 
-
-io.on('connection', (socket)=>{
-  socket.emit('welcome', 'Welcome to EMS');
-  socket.broadcast.emit('welcome', 'A new user has connected');
-  socket.on('newmessage',(payload)=>{
-    io.emit('message', payload);
-  });
-});
-
-
-
-/////////////////////////////////////////////////////////
 // Global ERROR MiddleWare 
 app.use('*',err404); // 404
 app.use(err500); //500

@@ -36,8 +36,6 @@
     "mongoose": "^5.9.19",
     "morgan": "^1.10.0",
     "safe-buffer": "^5.2.1",
-    "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
     "superagent": "^5.2.2",
     "uuid": "^8.1.0"
   },
@@ -45,8 +43,6 @@
     "lib": "lib",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.19",
-    "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
     "superagent": "^5.2.2"
   },
   "devDependencies": {

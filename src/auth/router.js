@@ -31,23 +31,19 @@ router.delete('/reject/:id', bearerAuthMiddleware, permissions('manage'), reject
 router.delete('/deleteuser/:id',bearerAuthMiddleware, permissions('manage'), deleteUserHandler);
 router.patch('/adminedit/:id',bearerAuthMiddleware, permissions('update'), updateUserHandler);
 router.post('/adduser',bearerAuthMiddleware, permissions('create'), addUserHandler);
+// router.get('/allnotseencomplaints',bearerAuthMiddleware, permissions('update'), updatecomplaintstatusHandler);
 
-/**                                      Accountant Routes                                         */
-
-router.post('/accountantmain/:id', bearerAuthMiddleware, permissions('account'), accountantMainHandler);
 
 /**                                         User Routes                                              */
 
 router.get('/getuserprofile',bearerAuthMiddleware, permissions('read'), userProfileHandler);
-router.patch('/usereditprofile',bearerAuthMiddleware, permissions('read'), userEditProfile);
 router.post('/uservacation',bearerAuthMiddleware, permissions('read'),uservacation);
-router.get('/userstart',bearerAuthMiddleware, permissions('read'),userstartHandler);
-router.get('/userend',bearerAuthMiddleware, permissions('read'),userendHandler);
+router.post('/addcomplaint',bearerAuthMiddleware, permissions('create'), addcomplaintHandler);
+// router.get('/usercomplaints',bearerAuthMiddleware, permissions('read'), usercomplaintsHandler);
 
-/**                                       Routes Definitions                               */
+/**                                                                                                    */
 
 
-/**                                    General Routes Definition                           */
 
 /**
  * 
@@ -57,8 +53,11 @@ router.get('/userend',bearerAuthMiddleware, permissions('read'),userendHandler);
  */
 function signup(req, res, next) {
   //sign up route if we have the user, return failure, else return generated token.
+  console.log("@@@@@@@@@@@@@@@@@@@")
   let user = req.body;
+  console.log(user,"result")  
   users.save(user).then(result => {
+    console.log(result,"result")
     // generate a token and return it.
     let token = users.generateTokenUp(result);
     res.cookie(token);
@@ -153,6 +152,26 @@ async function addUserHandler(req, res){
     res.status(500).send('This User is already created');
   }
 }
+async function addcomplaintHandler(req, res){
+  let newComplaint = req.body;
+  try {
+    sgMail.setApiKey('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');
+    const msg = {
+      to: `${newUser.email}`,
+      from: 'eng.abdallahobaid@gmail.com',
+      subject: 'From EMS',
+      text: 'Welcome to EMS (:',
+      html: `<strong> Welcome to our site your user name is:${newUser.username} and  your password is:${newUser.password} (:</strong>`,
+    };
+    await sgMail.send(msg);
+    await users.saveDirect(newUser);
+    res.status(200).send('Created');
+  } catch (error) {
+    console.log('router.js CREATE=====>', error);
+    res.status(500).send('This User is already created');
+  }
+}
+
 
 /**
  * 
@@ -193,10 +212,10 @@ function acceptUser(req, res, next){
   let userData = req.body;
   users.saveAdmin(userData).then( async result => {
     userModel.delete(userData._id);
-    sgMail.setApiKey('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');
+    sgMail.setApiKey('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');
     const msg = {
       to: `${userData.email}`,
-      from: 'eng.abdallahobaid@gmail.com',
+      from: 'abdallahobaid23@gmail.com',
       subject: 'Welcome to E.M.S Family',
       text: ' Welcome to E.M.S site (:',
       html: `<strong>  Welcome to E.M.S site your user name is:${userData.username} and  your password is:${tempPass || 'Secret'} (:</strong>`,
@@ -216,77 +235,11 @@ function acceptUser(req, res, next){
 
 /**                               Accountant Routes Definitions                               */
 
-async function accountantMainHandler(req, res, next){
-  let livingAllowanceAndRewards=req.body;
-  let accountantId = req.user.id;
-  let userId = req.params.id;
-  let accountantData =await adminModel.readId(accountantId);
-  let accountatname=accountantData[0].username;
-  users.accountentData(userId,accountatname,livingAllowanceAndRewards).then(result => {
-    console.log(result);
-    res.status(200).send(result);
-  }).catch(err=> {
-    console.log('ERR!!');
-    res.status(403).send('Listing error');
-  });
-}
+
 
 /**                              User Routes Definitions                              */
 
-/**
- * 
- * @param {obj} req 
- * @param {obj} res 
- */
-async function userendHandler(req, res){
-  let userId = req.user.id;
-  let username =await adminModel.readId(userId);
-  users.saveEndTime(username[0].username).then((result)=>{
-    console.log(result);
-    res.json(result);   
-  }).catch((err)=>{
-    console.log('ERR!!',err);
-    res.json('user press end before');});
-}
-/**
- * 
- * @param {obj} req 
- * @param {obj} res 
- */
-async function userstartHandler(req, res){
-  let userId = req.user.id;
-  let username =await adminModel.readId(userId);
-  var dateStartTime = new Date();
-  /** current month */
-  let month =  (dateStartTime.getMonth() + 1);
-  /** current year */
-  let year = dateStartTime.getFullYear();
-  /** current day */
-  let day = dateStartTime.getDate();
-  /** current hour */
-  let hour  = (dateStartTime.getHours()+3);
-  /** current minutes */
-  let min  = dateStartTime.getMinutes();
-  // {year:year,month:month,day:day,hour:hour,min:min},
-  superagent.get('http://gd.geobytes.com/GetCityDetails')
-    .then((result)=>{
-      let startTime={
-        username:username[0].username,
-        startTime:`${hour+':'+min}`,
-        location:`location:longitud:${result.body.geobyteslatitude} || longitud:${result.body.geobyteslongitude}`,
-        finishTime : 0,
-        workHours : 0,
-        date:`${day+'/'+month+'/'+year}`,
-      };
-      users.saveStartTime(startTime,day).then((result)=>{
-        res.json(result);   
-      }).catch((err)=>{
-        console.log('ERR!!',err);
-        res.json('user press start before');});
-    });
 
-
-}
 /**
  * 
  * @param {obj} req 
@@ -328,22 +281,6 @@ function userProfileHandler(req, res, next){
   }).catch(err=> {
     console.log('ERR!!');
     res.status(403).send('Listing error');
-  });
-}
-/**
- * 
- * @param {obj} req 
- * @param {obj} res 
- * @param {function} next 
- */
-function userEditProfile(req, res, next){
-  let userId = req.user.id;
-  let record= req.body;
-  users.updateUserProfile(userId,record).then(result => {
-    res.status(200).send('Updated');
-  }).catch(err=> {
-    console.log('ERR!!');
-    res.status(403).send('Edit error');
   });
 }
 

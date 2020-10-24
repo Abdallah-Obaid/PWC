@@ -79,6 +79,7 @@ class Model {
      */
   async delete(_id) {
     // return promise
+    console.log(_id)
     return await this.schema.findByIdAndDelete(_id);
   }
 }
