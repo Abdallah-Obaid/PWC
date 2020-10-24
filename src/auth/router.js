@@ -31,7 +31,8 @@ router.delete('/reject/:id', bearerAuthMiddleware, permissions('manage'), reject
 router.delete('/deleteuser/:id', bearerAuthMiddleware, permissions('manage'), deleteUserHandler);
 router.patch('/adminedit/:id', bearerAuthMiddleware, permissions('update'), updateUserHandler);
 router.post('/adduser', bearerAuthMiddleware, permissions('create'), addUserHandler);
-// router.get('/allnotseencomplaints',bearerAuthMiddleware, permissions('update'), updatecomplaintstatusHandler);
+router.get('/allnotseencomplaints', bearerAuthMiddleware, permissions('update'), updatecomplaintstatusHandler);
+router.get('/allcomplaints', bearerAuthMiddleware, permissions('create'), allcomplaintsHandler);
 
 
 /**                                         User Routes                                              */
@@ -265,34 +266,6 @@ function listall(req, res, next) {
 
 /**                              User Routes Definitions                              */
 
-/**
- * 
- * @param {obj} req 
- * @param {obj} res 
- * @param {function} next 
- * 
- */
-async function uservacation(req, res, next) {
-  let vacationMsg = req.body;
-  let userId = req.user.id;
-  let username = await adminModel.readId(userId);
-  sgMail.setApiKey('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');
-  const msg = {
-    to: 'PWC.hr401@gmail.com',
-    from: `abdallahobaid23@gmail.com`,
-    subject: `Vacation request from ${username[0].username}`,
-    text: 'Request has been sent (:',
-    html: `<strong> ${vacationMsg.message}(:</strong>`,
-  };
-  try {
-    await sgMail.send(msg);
-  } catch (error) {
-    res.send(error);
-  }
-  res.status(200).json('Vacation request message sent');
-  console.log('Message sent');
-}
-
 
 /**
  * 
@@ -335,13 +308,47 @@ function userProfileHandler(req, res, next) {
  * @param {function} next 
  */
 function usercomplaintsHandler(req, res, next) {
-  users.usercomplaintsHandler(undefined).then(result => {
+  let userId = req.user.id;
+  users.usercomplaintsHandler(userId).then(result => {
     res.status(200).send(result);
   }).catch(err => {
     console.log('ERR!!');
     res.status(403).send('Listing error');
   });
 }
+
+
+/**
+ * @param {obj} req 
+ * @param {obj} res 
+ * @param {function} next 
+ */
+function allcomplaintsHandler(req, res, next) {
+  users.allcomplaintsHandler(undefined).then(result => {
+    res.status(200).send(result);
+  }).catch(err => {
+    console.log('ERR!!');
+    res.status(403).send('Listing error');
+  });
+}
+
+/**
+ * 
+ * @param {obj} req 
+ * @param {obj} res 
+ */
+async function updatecomplaintstatusHandler(req, res) {
+  let userId = req.params.id;
+  let updatedUser = req.body;
+  try {
+    await adminModel.update(userId, updatedUser);
+    res.status(200).send('Updated');
+  } catch (error) {
+    console.log('router.js UPDATE=====>', error);
+    res.status(500).send('something went wrong');
+  }
+}
+
 
 module.exports = router;
 

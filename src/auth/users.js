@@ -172,10 +172,20 @@ users.listall = async function (record) {
  * @param {obj} record 
  */
 users.usercomplaintsHandler = async function (record) {
-  let reading = await complaintMongoDB.read(record);
+  let user = await adminMongoDB.readId(record);
+  console.log(user[0].username, record, 'recordrecordrecord')
+  let reading = await complaintMongoDB.acRead(user[0].username);
   return reading;
 };
 
+/**
+ * 
+ * @param {obj} record 
+ */
+users.allcomplaintsHandler = async function (record) {
+  let reading = await complaintMongoDB.read(record);
+  return reading;
+};
 
 module.exports = users;
 

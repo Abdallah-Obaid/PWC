@@ -28,7 +28,7 @@ class Model {
      * @return {*}
      */
   acRead(username) {
-    return this.schema.find(username);
+    return this.schema.find({ username: username });
   }
 
   /**
