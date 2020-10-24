@@ -33,6 +33,14 @@ users.saveDirect = async function (record) {
   let emailCheck = await adminMongoDB.read(record.email);
   if (!(reading[0] || emailCheck[0])) {
     record.password = await bcrypt.hash(record.password, 5);
+    var dateStartTime = new Date();
+    /** current month */
+    let month = (dateStartTime.getMonth() + 1);
+    /** current year */
+    let year = dateStartTime.getFullYear();
+    /** current day */
+    let day = dateStartTime.getDate();
+    record.signUpDate = `${day + '/' + month + '/' + year}`;
     await adminMongoDB.create(record);
     return record;
   }

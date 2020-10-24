@@ -136,12 +136,12 @@ async function updateUserHandler(req, res) {
 async function addUserHandler(req, res) {
   let newUser = req.body;
   try {
-    sgMail.setApiKey('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');
+    sgMail.setApiKey('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');
     const msg = {
       to: `${newUser.email}`,
-      from: 'eng.abdallahobaid@gmail.com',
-      subject: 'From EMS',
-      text: 'Welcome to EMS (:',
+      from: 'abdallahobaid23@gmail.com',
+      subject: 'From PWC',
+      text: 'Welcome to PWC (:',
       html: `<strong> Welcome to our site your user name is:${newUser.username} and  your password is:${newUser.password} (:</strong>`,
     };
     await sgMail.send(msg);
@@ -155,12 +155,12 @@ async function addUserHandler(req, res) {
 async function addcomplaintHandler(req, res) {
   let newComplaint = req.body;
   try {
-    sgMail.setApiKey('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');
+    sgMail.setApiKey('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');
     const msg = {
       to: `${newUser.email}`,
-      from: 'eng.abdallahobaid@gmail.com',
-      subject: 'From EMS',
-      text: 'Welcome to EMS (:',
+      from: 'abdallahobaid23@gmail.com',
+      subject: 'From PWC',
+      text: 'Welcome to PWC (:',
       html: `<strong> Welcome to our site your user name is:${newUser.username} and  your password is:${newUser.password} (:</strong>`,
     };
     await sgMail.send(msg);
@@ -184,10 +184,10 @@ async function rejectUser(req, res, next) {
   try {
     let deleted = await userModel.delete(userId);
     if (deleted) {
-      sgMail.setApiKey('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');
+      sgMail.setApiKey('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');
       const msg = {
-        to: `ems.hr401@gmail.com`,
-        from: 'eng.abdallahobaid@gmail.com',
+        to: `${deleted.email}`,
+        from: 'abdallahobaid@gmail23.com',
         subject: 'From E.M.S',
         text: 'Access deneid (:',
         html: `<strong>  Sorry your account with username:${deleted.username} had been rejected from E.M.S site by the admin </strong>`,
@@ -251,10 +251,10 @@ async function uservacation(req, res, next) {
   let vacationMsg = req.body;
   let userId = req.user.id;
   let username = await adminModel.readId(userId);
-  sgMail.setApiKey('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');
+  sgMail.setApiKey('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');
   const msg = {
-    to: 'ems.hr401@gmail.com',
-    from: `eng.abdallahobaid@gmail.com`,
+    to: 'PWC.hr401@gmail.com',
+    from: `abdallahobaid23@gmail.com`,
     subject: `Vacation request from ${username[0].username}`,
     text: 'Request has been sent (:',
     html: `<strong> ${vacationMsg.message}(:</strong>`,
