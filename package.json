@@ -1,0 +1,59 @@
+{
+  "name": "EMS",
+  "version": "1.0.0",
+  "description": "## Description",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint --fix --ext .js,.jsx .",
+    "test": "jest --verbose --coverage --detectOpenHandles",
+    "test-watch": "jest --watchAll --verbose --coverage",
+    "jsdoc": "jsdoc -c ./docs/config/jsdoc.config.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Access-Denied-401/EMS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Access-Denied-401/EMS/issues"
+  },
+  "homepage": "https://github.com/Access-Denied-401/EMS#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.0",
+    "base-64": "^0.1.0",
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "inquirer": "^7.2.0",
+    "jest-cli": "^26.0.1",
+    "jsdoc": "^3.6.4",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.9.19",
+    "morgan": "^1.10.0",
+    "safe-buffer": "^5.2.1",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "superagent": "^5.2.2",
+    "uuid": "^8.1.0"
+  },
+  "directories": {
+    "lib": "lib",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.19",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "superagent": "^5.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "jest": "^26.0.1",
+    "jsdoc": "^3.6.4",
+    "morgan": "^1.10.0",
+    "uuid": "^8.1.0"
+  }
+}

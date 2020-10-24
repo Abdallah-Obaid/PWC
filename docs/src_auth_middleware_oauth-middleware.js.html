@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/auth/middleware/oauth-middleware.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/auth/middleware/oauth-middleware.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+const superagent = require('superagent');
+const users = require('../users');
+const { v4: uuidv4 } = require('uuid');
+const user = require('../models/users/users-model');
+const bcrypt =require('bcrypt');
+/*
+  Resources
+  https://developer.github.com/apps/building-oauth-apps/
+*/
+
+const tokenServerUrl = process.env.TOKEN_SERVER;
+const remoteAPI = process.env.REMOTE_API;
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const API_SERVER = process.env.API_SERVER;
+
+/**
+ * 
+ * @param {obj} req 
+ * @param {obj} res 
+ * @param {function} next 
+ */
+
+module.exports = async  (req, res, next)=> {
+  try {
+    console.log('req.query', req.query);
+    
+    let code = req.query.code;
+    console.log('(1) CODE:', code);
+
+    let remoteToken = await exchangeCodeForToken(code);
+    console.log('(2) ACCESS TOKEN:', remoteToken);
+
+    let remoteUser = await getRemoteUserInfo(remoteToken);
+    console.log('(3) LinkedIn USER', remoteUser);
+
+    let [user, token, tempUserPassword] = await getUser(remoteUser);
+    req.user = user;
+    req.token = token;
+    req.tempUserPassword = tempUserPassword;
+    console.log(tempUserPassword,'lllllllllllllllllllllllllllllllllllllllllllllll');
+    
+    console.log('(4) LOCAL USER', token);
+
+    next();
+  } catch (e) {
+    console.log(`ERROR: ${e}`);
+    next('error');
+  }
+};
+
+/**
+ * 
+ * @param {string} code 
+ */
+async function exchangeCodeForToken(code) {
+  let tokenResponse = await superagent.post(tokenServerUrl)
+    .set('Content-Type','application/x-www-form-urlencoded')
+    .send({
+      code: code,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      redirect_uri: API_SERVER,
+      grant_type: 'authorization_code',
+    });
+
+  let access_token = tokenResponse.body.access_token;
+  console.log('returned token',access_token);
+  return access_token;
+}
+
+/**
+ * 
+ * @param {string} token 
+ */
+async function getRemoteUserInfo(token) {
+  console.log('HELLLLLO',token);
+  let userResponse = await superagent
+    .get(remoteAPI)
+    .set('Authorization',` Bearer ${token}`);
+  let user = userResponse.body;
+  return user;
+}
+
+/**
+ * 
+ * @param {obj} remoteUser 
+ */
+async function getUser(remoteUser) {
+  let username= remoteUser.localizedFirstName+remoteUser.localizedLastName;
+  let userRecord = {
+    username: username,
+    password: uuidv4(),
+    email: `${username}@email.com`,
+    role: 'user',
+    image: remoteUser.profilePicture.displayImage,
+  };
+  let tempUserPassword = userRecord.password;
+  userRecord.password  = await bcrypt.hash(userRecord.password, 5);
+  console.log('===========================>',remoteUser);
+  let userRead = await user.read(username);
+  if(!userRead[0]){
+    let userSave = await user.create(userRecord);
+    console.log(userSave);
+    // users.userRecord = userRecord;  
+    let token = users.generateTokenUp(userSave);
+    return [username, token, tempUserPassword];
+  }
+  return;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-admin%2520model.html">admin model</a></li><li><a href="module-admin-schema.html">admin-schema</a></li><li><a href="module-Model.html">Model</a></li><li><a href="module-pol.html">pol</a></li><li><a href="module-time.html">time</a></li><li><a href="module-time%2520model.html">time model</a></li><li><a href="module-users%2520infomation.html">users infomation</a></li><li><a href="module-users%2520model.html">users model</a></li></ul><h3>Classes</h3><ul><li><a href="module-Model-Model.html">Model</a></li></ul><h3>Global</h3><ul><li><a href="global.html#acceptUser">acceptUser</a></li><li><a href="global.html#accountantMainHandler">accountantMainHandler</a></li><li><a href="global.html#addUserHandler">addUserHandler</a></li><li><a href="global.html#deleteUserHandler">deleteUserHandler</a></li><li><a href="global.html#exchangeCodeForToken">exchangeCodeForToken</a></li><li><a href="global.html#getRemoteUserInfo">getRemoteUserInfo</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#list">list</a></li><li><a href="global.html#rejectUser">rejectUser</a></li><li><a href="global.html#signin">signin</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#updateUserHandler">updateUserHandler</a></li><li><a href="global.html#userEditProfile">userEditProfile</a></li><li><a href="global.html#userendHandler">userendHandler</a></li><li><a href="global.html#userProfileHandler">userProfileHandler</a></li><li><a href="global.html#userstartHandler">userstartHandler</a></li><li><a href="global.html#uservacation">uservacation</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Wed Jun 24 2020 09:48:36 GMT+0300 (Eastern European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
