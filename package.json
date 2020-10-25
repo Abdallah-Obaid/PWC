@@ -1,5 +1,5 @@
 {
-  "name": "EMS",
+  "name": "PWC-API",
   "version": "1.0.0",
   "description": "## Description",
   "main": "index.js",
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Access-Denied-401/EMS.git"
+    "url": "https://github.com/Abdallah-Obaid/PWC.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Access-Denied-401/EMS/issues"
+    "url": "https://github.com/Abdallah-Obaid/PWC/issues"
   },
-  "homepage": "https://github.com/Access-Denied-401/EMS#readme",
+  "homepage": "https://github.com/Abdallah-Obaid/PWC/PWC#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.2.0",
     "base-64": "^0.1.0",
