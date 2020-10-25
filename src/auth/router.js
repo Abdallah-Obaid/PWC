@@ -12,6 +12,7 @@ const sgMail = require('@sendgrid/mail');
 const userModel = require('./models/users/users-model');
 const superagent = require('superagent');
 const adminModel = require('./models/admin/admin-model');
+const complaintModel = require('./models/complaint/complaint-model');
 let tempPass;
 
 /** Signup-Signin Routes */
@@ -31,7 +32,7 @@ router.delete('/reject/:id', bearerAuthMiddleware, permissions('manage'), reject
 router.delete('/deleteuser/:id', bearerAuthMiddleware, permissions('manage'), deleteUserHandler);
 router.patch('/adminedit/:id', bearerAuthMiddleware, permissions('update'), updateUserHandler);
 router.post('/adduser', bearerAuthMiddleware, permissions('create'), addUserHandler);
-router.get('/allnotseencomplaints', bearerAuthMiddleware, permissions('update'), updatecomplaintstatusHandler);
+router.patch('/allnotseencomplaints', bearerAuthMiddleware, permissions('update'), updatecomplaintstatusHandler);
 router.get('/allcomplaints', bearerAuthMiddleware, permissions('create'), allcomplaintsHandler);
 
 
@@ -338,10 +339,15 @@ function allcomplaintsHandler(req, res, next) {
  * @param {obj} res 
  */
 async function updatecomplaintstatusHandler(req, res) {
-  let userId = req.params.id;
-  let updatedUser = req.body;
+  console.log(req.body._id, req.body.status)
+  let complaintId = req.body._id;
+  let status = req.body.status;
+
   try {
-    await adminModel.update(userId, updatedUser);
+    let complain = await complaintModel.readId(complaintId);
+    complain[0].status = status;
+    console.log(complain[0], 'complain[0] complain[0] complain[0] complain[0] complain[0]')
+    await complaintModel.update(complaintId, complain[0]);
     res.status(200).send('Updated');
   } catch (error) {
     console.log('router.js UPDATE=====>', error);
