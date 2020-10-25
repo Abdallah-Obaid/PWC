@@ -1,7 +1,7 @@
 # EMS
 ## Description
-The Employee management system is a fully functional web application that
- organize the operation of managing employee data such as his salary, perks, Work Time, login,
+This is a fully functional web application that
+ organize the operation of managing employee data, login,
  employee efficiency, employee personal information, generate his salary which depends on his overtime work also this system has
  administration capabilities of adding new employee deleting employee and the employee can also view his page
  and can give feedback, ask for a pay-rise and take scheduled days off.
@@ -21,10 +21,7 @@ Mongoose
 - This application uses the following method to create a new mongoose.Schema in the MongoDB DataBase. It is used to execute CRUD (create, read, update, and delete) operations on MongoDB documents.
  # UML
  ![UML](https://drive.google.com/file/d/1is__qU-8BdzAASmllEOSBl5J_iZWo1Yi/view?usp=sharing)
- # Wireframe
- [Wireframe](https://wireframe.cc/pro/pp/49f64a3c7351904)
- # Trello Board
- [Trello-Board](https://trello.com/b/UELv7lze/ems)
+
 # Routes
 ### post('/signup')
 * Provide username , password , email ,image , role type as JSON
@@ -147,8 +144,4 @@ Mongoose
 - eslint
 - `npm run test` 
 ##### Tests all routes and their related CRUD operations
- ## Team Members
- 1. Abdallah Obaid:[GitHub-link](https://github.com/Abdallah-Obaid)
- 2. Raghad Al-Quran:[GitHub-link](https://github.com/raghadalquran)
- 3. Ahlam Alefishat:[GitHub-link](https://github.com/ahlamalefishat96)
- 4. Amer Majdi:[GitHub-link](https://github.com/Amer-bit)
+ ## Abdallah Obaid:[GitHub-link](https://github.com/Abdallah-Obaid)
