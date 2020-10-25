@@ -19,8 +19,8 @@ let roles = {
  * @param {obj}
  */
 users.save = async function (record) {
-  let reading = await mongoDB.read(record.username);
-  let emailCheck = await mongoDB.read(record.email);
+  let reading = await adminMongoDB.read(record.username);
+  let emailCheck = await adminMongoDB.read(record.email);
   if (!(reading[0] || emailCheck[0])) {
     record.password = await bcrypt.hash(record.password, 5);
     await mongoDB.create(record);
