@@ -339,15 +339,9 @@ function allcomplaintsHandler(req, res, next) {
  * @param {obj} res 
  */
 async function updatecomplaintstatusHandler(req, res) {
-  console.log(req.body._id, req.body.status)
-  let complaintId = req.body._id;
-  let status = req.body.status;
-
   try {
-    let complain = await complaintModel.readId(complaintId);
-    complain[0].status = status;
-    console.log(complain[0], 'complain[0] complain[0] complain[0] complain[0] complain[0]')
-    await complaintModel.update(complaintId, complain[0]);
+    console.log(req.body)
+    await complaintModel.update(req.body._id, req.body);
     res.status(200).send('Updated');
   } catch (error) {
     console.log('router.js UPDATE=====>', error);
