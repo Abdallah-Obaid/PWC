@@ -29,7 +29,7 @@ Time off and vacation tracking that allows teams to easily request time off, vie
 
 # UML
 
-![UML](https://drive.google.com/file/d/1is__qU-8BdzAASmllEOSBl5J_iZWo1Yi/view)
+[UML](https://drive.google.com/file/d/1is__qU-8BdzAASmllEOSBl5J_iZWo1Yi/view)
 
 # Routes
 
