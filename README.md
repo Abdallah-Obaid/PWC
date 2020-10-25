@@ -1,4 +1,4 @@
-# PWC
+# PWC-API
 ## Description
 This is a fully functional web application that
  organize the operation of managing employee data, login,
