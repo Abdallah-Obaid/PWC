@@ -21,7 +21,9 @@ let roles = {
 users.save = async function (record) {
   let reading = await adminMongoDB.read(record.username);
   let emailCheck = await adminMongoDB.read(record.email);
-  if (!(reading[0] || emailCheck[0])) {
+  let reading1 = await mongoDB.read(record.username);
+  let emailCheck1 = await mongoDB.read(record.email);
+  if (!(reading[0] || emailCheck[0] || reading1[0] || emailCheck1[0])) {
     record.password = await bcrypt.hash(record.password, 5);
     await mongoDB.create(record);
     return record;
