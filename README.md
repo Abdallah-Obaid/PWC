@@ -6,10 +6,8 @@ This is a fully functional web application that
  administration capabilities of adding new employee deleting employee and the employee can also view his page
  and can give feedback, ask for a pay-rise and take scheduled days off.
 ## Project features
-- An attendance management system that lets you track your employers.
-- Automated payroll that allows you to enter pay rates for each person.
-- Time off and vacation tracking that allows teams to easily request time off, view balances, and get approval.
-- Chat: keeps your employers connecting to the latest news.
+An attendance management system that lets you track your employers.
+Time off and vacation tracking that allows teams to easily request time off, view balances, and get approval.
 ## MiddleWare
 - Basic authorization middleware leverages two npm modules: bcrypt and jsonwebtoken
 - Custom built linkedIn OAuth middleware
